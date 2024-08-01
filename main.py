@@ -1,28 +1,34 @@
-
 import random
 import smtplib
+import os
 
-random_quote = ""
-my_mail = "aryadevesh78@gmail.com"
-password = "ysbihbwegocrmnma"
-
+# Load quotes from a file
 with open("quotes.txt", "r") as file:
-    quotes = [quote for quote in file.readlines()]
+    quotes = file.readlines()
 
+def random_selection(quotes):
+    return random.choice(quotes).strip()
 
-def random_selection():
-    global random_quote
-    random_quote = random.choice(quotes)
+# Fetch a random quote
+random_quote = random_selection(quotes)
 
+# Securely load email credentials from environment variables
+my_mail = os.getenv("MY_EMAIL")
+password = os.getenv("MY_EMAIL_PASSWORD")
 
-random_selection()
-with smtplib.SMTP("smtp.gmail.com") as connection:
+# Create the email message
+subject = "Love Dose Everyday"
+body = (
+    "Hello Bubu,\n\n"
+    "Some beautiful lines for the most beautiful girl in the world.\n"
+    f"Motivational quote: {random_quote}\n"
+    "Always be happy and motivated <3.\n\n"
+    "Byeee Love, Take care :)"
+)
+message = f"Subject:{subject}\n\n{body}"
+
+# Send the email
+with smtplib.SMTP("smtp.gmail.com", 587) as connection:
     connection.starttls()
     connection.login(my_mail, password)
-    connection.sendmail(from_addr=my_mail,
-                        to_addrs="agrawalpratibha096@gmail.com",
-                        msg="Subject:Love Dose Everyday\n\nHello Bubu,\n"
-                            "Some beautiful lines for the most beautiful girl  in the world.\n"
-                            f" Motivational quote: {random_quote}\n. Always be happy and motivated <3."
-                            "Byeee Love Take care :)"
-                        )
+    connection.sendmail(from_addr=my_mail, to_addrs="mukeshhanuman2002@gmail.com", msg=message)
