@@ -1,0 +1,11 @@
+# Ignore log files
+*.log
+
+# Ignore temp directories
+temp/
+
+# Ignore compiled files
+*.class
+
+# Ignore specific files
+secrets.txt
